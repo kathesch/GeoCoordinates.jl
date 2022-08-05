@@ -62,7 +62,7 @@ begin
     f
 end
 
-record(f,"earth_spin.gif",1:100,framerate=60) do i
+record(f,"earth_spin2.gif",1:100,framerate=30) do i
     ax.azimuth[] = mod2pi(-0.001*i + deg2rad(-50))
     ts[] = mod1(i*5,length(df.P))
 end
