@@ -1,5 +1,10 @@
 # GeoCoordinates
 
+This package allows for simple coordinate transformations inbetween cartesian ECEF (Earth centered, Earth fixed) coordinates
+and LLA (latitude, longitude, altitude) coordinates. Linear interpolation via triangular basis functions is also possible. 
+
+Geodesy.jl is recommended over this package for geographic coordinate transformations, but this package has Makie visualizations which might be of interest to some people. 🌍
+
 ## Installation
 
 * Install Julia v1.7.0 or greater from JuliaLang.org's [downloads page](https://julialang.org/downloads/). 
@@ -78,6 +83,10 @@ julia> scatter!(x->lin_interp(x,xs,ys),xlims=(1,4))
 ```
 
 ![image3](./examples/lininterexample.svg)
+
+## Scitec
+
+
 
 ## Example Plots
 

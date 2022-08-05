@@ -133,4 +133,31 @@ function lin_interp(t, xs, ys)
     #Performs a convolution over `xs` of `ys` and the `triangle` basis functions. 
     ys .* [triangle(t, pxs[i], pxs[i+1], pxs[i+2]) for i in LinearIndices(xs)] |> sum
 end
+
+"""
+    scitec_data(t)
+
+Returns the velocity at the interpolated unix time `t` in the scitec data set. 
+"""
+function scitec_data(t)
+    df = CSV.File("../data/SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
+
+    #converts altitude to meters
+    transform!(df, :h => ByRow(x->1000*x) => :h)
+    #converts latitude, longitude, altitude to XYZ position vectors 
+    transform!(df, [:ϕ, :λ, :h] => ByRow(lla2xyz) => :P)
+    #breaks XYZ positions into X, Y, Z vectors for easier plotting 
+    transform!(df, :P => [:X,:Y,:Z])
+    #computes differences in adjacents times for velocity calculation
+    transform!(df, :T => (x->x - lag(x, default=x[1] - 1)) => :dT)
+    #computes differences in adjacents positions for velocity calculation
+    transform!(df, :P => (x->x - lag(x,default=x[1])) => :dP)
+    #divides position difference by time differences to obtain velocity
+    transform!(df, [:dP,:dT] => ByRow(./) => :V)
+    #breaks V velocities into X, Y, Z vectors for easier plotting
+    transform!(df, :V => [:Vx, :Vy, :Vz])
+
+    return lin_interp(t1, df.T,df.V)
+end
+
 end
