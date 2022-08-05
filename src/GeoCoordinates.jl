@@ -14,6 +14,7 @@ export
     lin_interp,
     scitec_data
 
+include("../data/SciTec_code_problem_data.csv")
 
 """
     Datum(a=6378137, f=1/298.25722356)
@@ -149,7 +150,7 @@ end
 Returns a tuple of the dataframe and the velocity at the interpolated unix time `t` in the scitec data set. 
 """
 function scitec_data(t)
-    df = CSV.File("../data/SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
+    df = CSV.File("SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
 
     #converts altitude to meters
     transform!(df, :h => ByRow(x->1000*x) => :h)
