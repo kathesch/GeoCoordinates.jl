@@ -8,8 +8,6 @@ import
     DataFrames.transform!,
     ShiftedArrays.lag
 
-const df = CSV.File("../data/SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
-
 export
     Datum,
     lla2xyz,xyz2lla,
@@ -152,7 +150,8 @@ end
 Returns a tuple of the dataframe and the velocity at the interpolated unix time `t` in the scitec data set. 
 """
 function scitec_data(t)
-    #df = CSV.File("../data/SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
+    path = joinpath(@__DIR__, "..", "data", "SciTec_code_problem_data.csv")
+    df = CSV.File(path, header=["T","ϕ","λ","h"]) |> DataFrame
 
     #converts altitude to meters
     transform!(df, :h => ByRow(x->1000*x) => :h)
