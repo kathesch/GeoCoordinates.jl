@@ -1,0 +1,4 @@
+name = "GeoCoordinates"
+uuid = "764967bb-927f-4f1a-a5d9-9d2638826a77"
+authors = ["kathesch <katherinegruenewald@gmail.com>"]
+version = "0.1.0"
