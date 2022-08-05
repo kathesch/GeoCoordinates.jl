@@ -1,4 +1,5 @@
 # GeoCoordinates
 
-![image][./examples/earth_spin.gif]
-![image][./examples/earth_viz.png]
+![image](./examples/earth_spin.gif)
+
+![image](./examples/earth_viz.png)
