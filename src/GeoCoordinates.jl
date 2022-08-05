@@ -3,7 +3,7 @@ module GeoCoordinates
 export
     Datum,
     lla2xyz,xyz2lla,
-    linear_interp
+    lin_interp
 
 struct Datum
     a::Float64 #semimajor axis
@@ -68,7 +68,7 @@ end
 
 xyz2lla(lla) = xyz2lla(lla...)
 
-function tri(x, a=-1, m=0, b=1)
+function triangle(x, a=-1, m=0, b=1)
     if x > a && x <= m
         1/(m-a)*(x-a)
     elseif x > m && x < b
@@ -78,8 +78,8 @@ function tri(x, a=-1, m=0, b=1)
     end
 end
 
-function linear_interp(t,xs,ys)
+function lin_interp(t,xs,ys)
     pxs = [0; xs; 0]
-    ys .* [tri(t, pxs[i], pxs[i+1], pxs[i+2]) for i in LinearIndices(xs)] |> sum
+    ys .* [triangle(t, pxs[i], pxs[i+1], pxs[i+2]) for i in LinearIndices(xs)] |> sum
 end
 end
