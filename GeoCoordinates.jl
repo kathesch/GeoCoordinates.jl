@@ -1,6 +1,6 @@
 module GeoCoordinates
 
-export 
+export
     Datum,
     lla2xyz,xyz2lla,
     linear_interp
