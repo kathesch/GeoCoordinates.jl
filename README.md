@@ -11,7 +11,7 @@ Geodesy.jl is recommended over this package for geographic coordinate transforma
 
 * Run Julia in terminal
 
-  * The default Github API has changed to use Personal Access Tokens, so you will need to type ``` ENV["JULIA_PKG_USE_CLI_GIT"]=true ``` into the REPL to import from a private repository without generating a PAT first. 
+  * The default Github API has changed to use Personal Access Tokens, so you will need to type ``` ENV["JULIA_PKG_USE_CLI_GIT"]=true ``` into the REPL to import from a private repository without generating a PAT first. This is not need for public repositories. 
   
 
   * The Julia package manager REPL can be accessed by typing ```]``` into the default REPL and then ```add https://github.com/kathesch/GeoCoordinates.jl``` 
@@ -84,9 +84,20 @@ julia> scatter!(x->lin_interp(x,xs,ys),xlims=(1,4))
 
 ![image3](./examples/lininterexample.svg)
 
-## Scitec
+## Scitec Dataset Test
 
+After installing and opening a Julia terminal, this package may be tested on a Unix Time `t`.
 
+`df` will be the entire dataframe and includes all calculated positions, times, etc and `v` will be the interpolated velocity at that Unix time. 
+
+```julia
+julia> df, v = scitec_data(1532334000)
+julia> v
+3-element Vector{Float64}:
+  -995.9152687485116
+ -2514.4388939752785
+    55.92122005190347
+```
 
 ## Example Plots
 

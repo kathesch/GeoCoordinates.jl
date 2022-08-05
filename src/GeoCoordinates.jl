@@ -14,8 +14,6 @@ export
     lin_interp,
     scitec_data
 
-
-
 """
     Datum(a=6378137, f=1/298.25722356)
 
