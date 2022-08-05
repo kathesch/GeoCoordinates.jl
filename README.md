@@ -1,6 +1,6 @@
 # GeoCoordinates
 
-This package allows for simple coordinate transformations inbetween cartesian ECEF (Earth centered, Earth fixed) coordinates
+This package allows for simple coordinate transformation between cartesian ECEF (Earth centered, Earth fixed) coordinates
 and LLA (latitude, longitude, altitude) coordinates. Linear interpolation via triangular basis functions is also possible. 
 
 Geodesy.jl is recommended over this package for geographic coordinate transformations, but this package has Makie visualizations which might be of interest to some people. 🌍
