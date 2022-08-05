@@ -3,7 +3,8 @@ module GeoCoordinates
 export
     Datum,
     lla2xyz,xyz2lla,
-    lin_interp
+    lin_interp,
+    scitec_data
 
 
 """
@@ -137,7 +138,7 @@ end
 """
     scitec_data(t)
 
-Returns the velocity at the interpolated unix time `t` in the scitec data set. 
+Returns a tuple of the dataframe and the velocity at the interpolated unix time `t` in the scitec data set. 
 """
 function scitec_data(t)
     df = CSV.File("../data/SciTec_code_problem_data.csv", header=["T","ϕ","λ","h"]) |> DataFrame
@@ -157,7 +158,7 @@ function scitec_data(t)
     #breaks V velocities into X, Y, Z vectors for easier plotting
     transform!(df, :V => [:Vx, :Vy, :Vz])
 
-    return lin_interp(t1, df.T,df.V)
+    return df, lin_interp(t, df.T,df.V)
 end
 
 end
