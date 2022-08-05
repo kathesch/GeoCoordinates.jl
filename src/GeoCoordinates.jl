@@ -38,7 +38,9 @@ end
     lla2xyz(ϕ,λ,h; [datum=Datum()])
     lla2xyz(xyz) = lla2xyz(xyz...)
 
-Takes coordinates in LLA format (latitude=ϕ, longitude=λ, altitude=h) to ECEF format (X,Y,Z). Default `Datum` is WSG84. 
+Takes coordinates in LLA format (latitude=ϕ, longitude=λ, altitude=h) to ECEF format (X,Y,Z).
+Latitudes and longitudes are taken as positive degree values being North and East respectively. 
+Default `Datum` is WSG84. 
 """
 function lla2xyz(ϕ, λ, h; datum=Datum())
     (;a,b) = datum

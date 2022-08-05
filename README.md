@@ -34,7 +34,52 @@ julia> using GeoCoordinates
 
 ## API
 
+Given coordinates in LLA, London for example, (51.5072°N, 0.12°W, 2m), we can obtain a vector of ECEF (X,Y,Z) coordinates. 
 
+(Latitudes and longitudes are taken as positive degree values being North and East respectively.)
+
+```julia
+julia> lla2xyz(51.5072, 0.12, 2)
+3-element Vector{Float64}:
+    3.9780141057281126e6
+ 8331.545442374172
+    4.968862652915071e6
+```
+
+And we can then convert these back into LLA to obtain our previous input.
+
+```julia
+julia> xyz2lla(ans)
+3-element Vector{Float64}:
+ 51.5072
+  0.12000000000000001
+  2.0
+```
+
+Additionally, linear interpolation is possible with the ```lin_interp``` function. 
+
+```julia
+julia> xs = [1,1.1,3,4]
+4-element Vector{Float64}:
+ 1.0
+ 1.1
+ 3.0
+ 4.0
+
+julia> ys = rand(4)
+4-element Vector{Float64}:
+ 0.8056397472418082
+ 0.7549247920881392
+ 0.5714319431723006
+ 0.3234866269090587
+
+julia> scatter(xs,ys,markersize=10,xlims=(0,5))
+julia> scatter!(x->lin_interp(x,xs,ys),xlims=(1,4))
+```
+
+
+
+![image3](./examples/lininterexample.svg)
 
 ## Example Plots
 
