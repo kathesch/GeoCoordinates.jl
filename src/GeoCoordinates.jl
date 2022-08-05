@@ -5,6 +5,13 @@ export
     lla2xyz,xyz2lla,
     lin_interp
 
+
+"""
+    Datum(a=6378137, f=1/298.25722356)
+
+Constructs a `Datum` type for use in coordinate transformations. 
+Default values are the WSG84 semimajor axis `a`= 6378137 meters and the flattening factor `f`=1/298.25722356. 
+"""
 struct Datum
     a::Float64 #semimajor axis
     b::Float64 #semiminor axis
@@ -21,12 +28,19 @@ struct Datum
     end
 end
 
+#Radius of curvature (meters)
 function N(ϕ, datum=Datum())
     (;a,e) = datum
     return a / √(1 - e^2 * sind(ϕ)^2)
 end
 
-function lla2xyz(ϕ,λ,h; datum=Datum())
+"""
+    lla2xyz(ϕ,λ,h; [datum=Datum()])
+    lla2xyz(xyz) = lla2xyz(xyz...)
+
+Takes coordinates in LLA format (latitude=ϕ, longitude=λ, altitude=h) to ECEF format (X,Y,Z). Default `Datum` is WSG84. 
+"""
+function lla2xyz(ϕ, λ, h; datum=Datum())
     (;a,b) = datum
 
     X = (N(ϕ) + h) * cosd(ϕ) * cosd(λ)
@@ -38,7 +52,8 @@ end
 
 lla2xyz(xyz) = lla2xyz(xyz...)
 
-function xyz2phih(X,Y,Z; datum=Datum(), atol=1E-6)
+#Iterative algorithm for returning latitude and altitude from ECEF (X,Y,Z) values. 
+function xyz2phih(X, Y, Z; datum=Datum(), atol=1E-6)
     (;e) = datum
 
     p = √(X^2 + Y^2)
@@ -48,6 +63,7 @@ function xyz2phih(X,Y,Z; datum=Datum(), atol=1E-6)
     ϕ_old = 0
     h_old = 0
 
+    #While loop checks to see if ϕ and h are no longer changing to within atol tolernace. 
     while !(isapprox(ϕ_old, ϕ, atol=atol) && isapprox(h_old, h, atol=atol))
         ϕ_old = ϕ
         h_old = h
@@ -58,7 +74,15 @@ function xyz2phih(X,Y,Z; datum=Datum(), atol=1E-6)
     return ϕ,h
 end
 
-function xyz2lla(X,Y,Z; datum=Datum(), atol=1E-6)  
+"""
+xyz2lla(X,Y,Z; [datum=Datum(), atol=1E-6])
+xyz2lla(lla) = xyz2lla(lla...)
+
+Takes coordinates in ECEF format (`X`,`Y`,`Z`) to LLA format (latitude=`ϕ`, longitude=`λ`, altitude=`h`).
+`atol` provides an aboslute tolerance for the iterative algorithm to generate `ϕ` and `h`.
+Default `Datum` is WSG84. 
+"""
+function xyz2lla(X, Y, Z; datum=Datum(), atol=1E-6)  
 
     ϕ,h = xyz2phih(X,Y,Z, datum=datum, atol=atol)
     λ = atand(Y/X)
@@ -68,6 +92,11 @@ end
 
 xyz2lla(lla) = xyz2lla(lla...)
 
+#=
+A triangle "bump" function for use as a basis function in `lin_interp`. 
+`a` and `b` are the x intercepts values of the triangle. 
+`m` is the point where it reaches its highest value of `1`
+=#
 function triangle(x, a=-1, m=0, b=1)
     if x > a && x <= m
         1/(m-a)*(x-a)
@@ -78,8 +107,28 @@ function triangle(x, a=-1, m=0, b=1)
     end
 end
 
-function lin_interp(t,xs,ys)
+"""
+lin_interp(t, xs, ys)
+
+Returns the value of the linear interpolation of `ys` at value `t` in `xs`. `xs` and `ys` should be equal length arrays.
+Uses triangular basis functions over `xs` scaled by the corresponding values in `ys` to generate an interpolating function for
+some value `t`
+
+Example
+xs = [1,2,3,4]
+ys = [6,7,8,9]
+
+#arguments to `a`,`m`,`b` in `triangle` in parentheses
+[0 1 2 3 4 0] = padded `xs` array
+(0 1 2) * ys[1] +
+  (1 2 3) * ys[2] +
+    (2 3 4) * ys[3] +
+      (3 4 0) * ys[4]
+"""
+function lin_interp(t, xs, ys)
+    #constructs a padded array from `xs`
     pxs = [0; xs; 0]
+    #Performs a convolution over `xs` of `ys` and the `triangle` basis functions. 
     ys .* [triangle(t, pxs[i], pxs[i+1], pxs[i+2]) for i in LinearIndices(xs)] |> sum
 end
 end
