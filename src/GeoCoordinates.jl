@@ -1,5 +1,7 @@
 module GeoCoordinates
 
+using DataFrames, CSV, ShiftedArrays
+
 export
     Datum,
     lla2xyz,xyz2lla,
