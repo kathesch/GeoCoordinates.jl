@@ -2,6 +2,12 @@ module GeoCoordinates
 
 using DataFrames, CSV, ShiftedArrays
 
+import
+    CSV.File,
+    DataFrames.DataFrame,
+    DataFrames.transform!,
+    ShiftedArrays.lag
+
 export
     Datum,
     lla2xyz,xyz2lla,
