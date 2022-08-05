@@ -34,9 +34,9 @@ julia> using GeoCoordinates
 
 ## API
 
-Given coordinates in LLA, London for example, (51.5072°N, 0.12°W, 2m), we can obtain a vector of ECEF (X,Y,Z) coordinates. 
+Given coordinates in LLA, London for example, (51.5072°N, 0.12°W, 2m), we can obtain a vector of ECEF (X,Y,Z) coordinates using ```lla2xyz(lat, long, altitude)```.
 
-(Latitudes and longitudes are taken as positive degree values being North and East respectively.)
+Latitudes and longitudes are taken as positive degree values being North and East respectively.
 
 ```julia
 julia> lla2xyz(51.5072, 0.12, 2)
@@ -46,7 +46,7 @@ julia> lla2xyz(51.5072, 0.12, 2)
     4.968862652915071e6
 ```
 
-And we can then convert these back into LLA to obtain our previous input.
+And we can then convert these back into LLA to obtain our previous input using ```xyz2lla(X,Y,Z)```.
 
 ```julia
 julia> xyz2lla(ans)
