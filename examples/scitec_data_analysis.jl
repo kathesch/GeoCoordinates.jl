@@ -68,12 +68,3 @@ record(f,"earth_spin2.gif",1:100,framerate=30) do i
 end
 
 save("earth_viz.png",f)
-=#
-
-using GeoCoordinates, Plots
-
-xs = [1,1.1,3,4]
-ys = rand(4)
-
-scatter(xs,ys,markersize=10)
-scatter!(x->lin_interp(x,xs,ys),xlims=(0,5))

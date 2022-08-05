@@ -56,7 +56,7 @@ julia> xyz2lla(ans)
   2.0
 ```
 
-Additionally, linear interpolation is possible with the ```lin_interp``` function. 
+Additionally, linear interpolation of two arrays `xs` and `ys` for some value `t` is possible with the ```lin_interp(t,xs,ys)``` function. 
 
 ```julia
 julia> xs = [1,1.1,3,4]
@@ -76,8 +76,6 @@ julia> ys = rand(4)
 julia> scatter(xs,ys,markersize=10,xlims=(0,5))
 julia> scatter!(x->lin_interp(x,xs,ys),xlims=(1,4))
 ```
-
-
 
 ![image3](./examples/lininterexample.svg)
 
