@@ -86,7 +86,7 @@ julia> scatter!(x->lin_interp(x,xs,ys),xlims=(1,4))
 
 ## Scitec Dataset Test
 
-After installing and opening a Julia terminal, this package may be tested on a Unix Time `t`.
+After installing and opening a Julia terminal, this package may be tested on a Unix Time `t` using `scitec_data(t)`.
 
 `df` will be the entire dataframe and includes all calculated positions, times, etc and `v` will be the interpolated velocity at that Unix time. 
 
